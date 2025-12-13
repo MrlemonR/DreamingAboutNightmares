@@ -10,9 +10,23 @@ public class HoverOutline : MonoBehaviour
     public TMP_Text Text;
 
     bool textcourtinestart = false;
+    bool Revolercourtine= false;
+    void Start()
+    {
+        StartCoroutine(TextActive(0f, 0f));
+    }
     void Update()
     {
-        if (revolver.GetComponent<Revolver>().selfAimMode == false) return;
+        if (revolver.GetComponent<Revolver>().selfAimMode == true)
+        {
+            if (!textcourtinestart) StartCoroutine(TextActive(1f, 0.5f));
+            textcourtinestart = true;
+        }
+        else
+        {
+            if (!textcourtinestart) StartCoroutine(TextActive(0f, 0.5f));
+            textcourtinestart = true;
+        }
         Vector3 MousePos = Input.mousePosition;
         MousePos.z = 10f;
         MousePos = cam.ScreenToWorldPoint(MousePos);
@@ -24,14 +38,14 @@ public class HoverOutline : MonoBehaviour
             Debug.Log("Hit: " + hit.collider.gameObject.name);
             if (hit.collider.gameObject.name == gameObject.name)
             {
-                StartCoroutine(RevolverLookAt());
-                if (!textcourtinestart) StartCoroutine(TextActive(1f));
+                if(!Revolercourtine) StartCoroutine(RevolverLookAt());
+                Revolercourtine = true;
             }
         }
     }
     IEnumerator RevolverLookAt()
     {
-        Quaternion startRot = cam.transform.localRotation;
+        Quaternion startRot = revolver.transform.localRotation;
         Quaternion endRot = RevolverLook.localRotation;
 
         float duration = 0.5f;
@@ -43,31 +57,23 @@ public class HoverOutline : MonoBehaviour
             float frac = Mathf.Clamp01(t / duration);
             revolver.transform.localRotation = Quaternion.Slerp(startRot, endRot, frac);
             yield return null;
+            Revolercourtine = false;
         }
     }
-    IEnumerator TextActive(float targetAlpha)
+    IEnumerator TextActive(float targetAlpha, float targetSpeed)
     {
         float startAlpha = Text.color.a;
         float elapsed = 0f;
 
-        while (elapsed < 1f)
+        while (elapsed < targetSpeed)
         {
             elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / 1f);
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / targetSpeed);
             Text.color = new Color(Text.color.r, Text.color.g, Text.color.b, alpha);
             yield return null;
+            textcourtinestart = false;
         }
 
         Text.color = new Color(Text.color.r, Text.color.g, Text.color.b, targetAlpha);
-    }
-    void OnDrawGizmos()
-    {
-        Vector3 MousePos = Input.mousePosition;
-        MousePos.z = 10f;
-        MousePos = Camera.main.ScreenToWorldPoint(MousePos);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(Input.mousePosition, 0.1f);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(Camera.main.transform.position, MousePos);
     }
 }
