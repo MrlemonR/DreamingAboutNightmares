@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Xml.Serialization;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Revolver : MonoBehaviour
     public PlayerController playerCon;
     public Transform PickUpPos;
     public GameObject PressFText;
+    public GameObject CharacterMesh;
     bool isVisible = false;
     bool canpickup = true;
     public Vector3 aimSelfEuler;
@@ -23,8 +25,9 @@ public class Revolver : MonoBehaviour
     {
         StartCoroutine(TextActive(false, 0.1f));
         StartCoroutine(BodyParts(false, 0f));
+        CharacterMesh.SetActive(false);
     }
-    bool selfAimMode = false;
+    public bool selfAimMode = false;
     void Update()
     {
         if (canpickup) PickUp();
@@ -35,11 +38,13 @@ public class Revolver : MonoBehaviour
             {
                 selfAimMode = true;
                 StartCoroutine(Aim());
+                CharacterMesh.SetActive(true);
             }
             else
             {
                 selfAimMode = false;
                 StartCoroutine(Aim());
+                CharacterMesh.SetActive(false);
             }
         }
 
@@ -70,6 +75,7 @@ public class Revolver : MonoBehaviour
         if (selfAimMode)
         {
             playerCon.canLook = false;
+            playerCon.canMove = false;
             Cursor.lockState = CursorLockMode.None;
             StartCoroutine(BodyParts(true, 0.1f));
 
@@ -89,6 +95,7 @@ public class Revolver : MonoBehaviour
         else
         {
             playerCon.canLook = true;
+            playerCon.canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
             StartCoroutine(BodyParts(false, 0.1f));
         }
