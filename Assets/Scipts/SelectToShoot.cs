@@ -20,11 +20,11 @@ public class SelectToShoot : MonoBehaviour
     }
     void Update()
     {
-        if (revolver.GetComponent<Revolver>().selfAimMode == true)
+        if (revolver.GetComponent<Revolver>().selfAimMode)
         {
             if (!textcourtinestart) StartCoroutine(TextActive(1f, 0.3f));
             mouseHover();
-            RevolverShake(0.007f);
+            RevolverShakeByTarget();
         }
         else
         {
@@ -45,6 +45,7 @@ public class SelectToShoot : MonoBehaviour
             switch (hit.collider.gameObject.name)
             {
                 case "Headcollider":
+                    currentTarget = AimTarget.Head;
                     if (!RevoRotCourtine) StartCoroutine(RevolverLookAt(0));
                     if (!RevoMoveCourtine) StartCoroutine(RevolverMoveTo(0));
                     if (!textColorcourtine) StartCoroutine(TextColorChange(0));
@@ -52,6 +53,7 @@ public class SelectToShoot : MonoBehaviour
                     RevoMoveCourtine = true;
                     break;
                 case "ArmCollider":
+                    currentTarget = AimTarget.Arm;
                     if (!RevoRotCourtine) StartCoroutine(RevolverLookAt(1));
                     if (!RevoMoveCourtine) StartCoroutine(RevolverMoveTo(1));
                     if (!textColorcourtine) StartCoroutine(TextColorChange(1));
@@ -59,6 +61,7 @@ public class SelectToShoot : MonoBehaviour
                     RevoMoveCourtine = true;
                     break;
                 case "LegCollider":
+                    currentTarget = AimTarget.Leg;
                     if (!RevoRotCourtine) StartCoroutine(RevolverLookAt(2));
                     if (!RevoMoveCourtine) StartCoroutine(RevolverMoveTo(2));
                     if (!textColorcourtine) StartCoroutine(TextColorChange(2));
@@ -86,19 +89,15 @@ public class SelectToShoot : MonoBehaviour
         RevoRotCourtine = false;
     }
 
-
     IEnumerator RevolverMoveTo(int index)
     {
         RevoMoveCourtine = true;
         Vector3 startPos = revolver.transform.localPosition;
         Vector3 endPos = MovePositions[index].localPosition;
-        float duration = 0.5f;
-        float t = 0f;
+        float duration = 0.5f; float t = 0f;
         while (t < duration)
         {
-            t += Time.deltaTime;
-            float frac = t / duration;
-            revolver.transform.localPosition = Vector3.Slerp(startPos, endPos, frac);
+            t += Time.deltaTime; float frac = t / duration; revolver.transform.localPosition = Vector3.Slerp(startPos, endPos, frac);
             yield return null;
         }
         revolver.transform.localPosition = endPos;
@@ -162,5 +161,25 @@ public class SelectToShoot : MonoBehaviour
     void RevolverShake(float ShakeAmout)
     {
         revolver.transform.localPosition += new Vector3(Random.Range(-ShakeAmout, ShakeAmout), 0, Random.Range(-ShakeAmout, ShakeAmout));
+    }
+    public enum AimTarget
+    {
+        None, Head, Arm, Leg
+    }
+    AimTarget currentTarget = AimTarget.None;
+    void RevolverShakeByTarget()
+    {
+        switch (currentTarget)
+        {
+            case AimTarget.Head:
+                RevolverShake(0.002f);
+                break;
+            case AimTarget.Arm:
+                RevolverShake(0.001f);
+                break;
+            case AimTarget.Leg:
+                RevolverShake(0.001f);
+                break;
+        }
     }
 }
