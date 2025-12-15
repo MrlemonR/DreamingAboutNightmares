@@ -18,6 +18,8 @@ public class Revolver : MonoBehaviour
     public float aimSensitivity = 3f;
     public float aimHorizontalLimit = 5f;
     public float aimVerticalLimit = 3f;
+    public GameObject[] RevoParts;
+    public GameObject[] Colliders;
     Vector2 aimOffset;
 
 
@@ -26,6 +28,7 @@ public class Revolver : MonoBehaviour
         StartCoroutine(TextActive(false, 0.1f));
         StartCoroutine(BodyParts(false, 0f));
         CharacterMesh.SetActive(false);
+        CloseColliders(false);
     }
     public bool selfAimMode = false;
     void Update()
@@ -39,12 +42,16 @@ public class Revolver : MonoBehaviour
                 selfAimMode = true;
                 StartCoroutine(Aim());
                 CharacterMesh.SetActive(true);
+                RevoOpenCloseVis(true);
+                CloseColliders(true);
             }
             else
             {
                 selfAimMode = false;
                 StartCoroutine(Aim());
                 CharacterMesh.SetActive(false);
+                RevoOpenCloseVis(false);
+                CloseColliders(false);
             }
         }
 
@@ -63,6 +70,13 @@ public class Revolver : MonoBehaviour
 
 
         if (selfAimMode) BdpartsTextFollow();
+    }
+    void CloseColliders(bool active)
+    {
+        for (int i = 0; i < Colliders.Length; i++)
+        {
+            Colliders[i].SetActive(active);
+        }
     }
 
     public Transform selfAimPose;
@@ -141,6 +155,7 @@ public class Revolver : MonoBehaviour
                 transform.SetParent(PickUpPos);
                 transform.localPosition = PickUpPos.localPosition;
                 transform.rotation = PickUpPos.rotation;
+                RevoOpenCloseVis(false);
             }
         }
         if (dot > 0.4f && distance < 2f)
@@ -184,5 +199,13 @@ public class Revolver : MonoBehaviour
             yield return null;
         }
         text.color = new Color(text.color.r, text.color.g, text.color.b, target);
+    }
+    public void RevoOpenCloseVis(bool active)
+    {
+        for (int i = 0; i < RevoParts.Length; i++)
+        {
+            if (active) RevoParts[i].SetActive(true);
+            if (!active) RevoParts[i].SetActive(false);
+        }
     }
 }

@@ -52,7 +52,6 @@ public class SelectToShoot : MonoBehaviour
         if (newTarget != currentTarget)
         {
             currentTarget = newTarget;
-            StopAllCoroutines();
             if (currentTarget != AimTarget.None)
             {
                 int index = TargetToIndex(currentTarget);
@@ -94,7 +93,8 @@ public class SelectToShoot : MonoBehaviour
     {
         Vector3 startPos = revolver.transform.localPosition;
         Vector3 endPos = MovePositions[index].localPosition;
-        float duration = 0.5f; float t = 0f;
+        float duration = 0.5f;
+        float t = 0f;
         while (t < duration)
         {
             t += Time.deltaTime; float frac = t / duration; revolver.transform.localPosition = Vector3.Slerp(startPos, endPos, frac);
