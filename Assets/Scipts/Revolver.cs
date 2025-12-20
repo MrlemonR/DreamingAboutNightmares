@@ -11,7 +11,7 @@ public class Revolver : MonoBehaviour
     public GameObject PressFText;
     public GameObject CharacterMesh;
     bool isVisible = false;
-    bool canpickup = true;
+    public bool canpickup = true;
     public Vector3 aimSelfEuler;
     Coroutine fadeRoutine;
     Quaternion smoothAimRot;
@@ -19,16 +19,13 @@ public class Revolver : MonoBehaviour
     public float aimHorizontalLimit = 5f;
     public float aimVerticalLimit = 3f;
     public GameObject[] RevoParts;
-    public GameObject[] Colliders;
     Vector2 aimOffset;
 
 
     void Start()
     {
         StartCoroutine(TextActive(false, 0.1f));
-        StartCoroutine(BodyParts(false, 0f));
         CharacterMesh.SetActive(false);
-        CloseColliders(false);
     }
     public bool selfAimMode = false;
     void Update()
@@ -43,7 +40,6 @@ public class Revolver : MonoBehaviour
                 StartCoroutine(Aim());
                 CharacterMesh.SetActive(true);
                 RevoOpenCloseVis(true);
-                CloseColliders(true);
             }
             else
             {
@@ -51,7 +47,6 @@ public class Revolver : MonoBehaviour
                 StartCoroutine(Aim());
                 CharacterMesh.SetActive(false);
                 RevoOpenCloseVis(false);
-                CloseColliders(false);
             }
         }
 
@@ -68,17 +63,7 @@ public class Revolver : MonoBehaviour
             Camera.main.transform.rotation = smoothAimRot;
         }
 
-
-        if (selfAimMode) BdpartsTextFollow();
     }
-    void CloseColliders(bool active)
-    {
-        for (int i = 0; i < Colliders.Length; i++)
-        {
-            Colliders[i].SetActive(active);
-        }
-    }
-
     public Transform selfAimPose;
     IEnumerator Aim()
     {
@@ -91,7 +76,6 @@ public class Revolver : MonoBehaviour
             playerCon.canLook = false;
             playerCon.canMove = false;
             Cursor.lockState = CursorLockMode.None;
-            StartCoroutine(BodyParts(true, 0.1f));
 
 
             float duration = 0.5f;
@@ -111,38 +95,9 @@ public class Revolver : MonoBehaviour
             playerCon.canLook = true;
             playerCon.canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
-            StartCoroutine(BodyParts(false, 0.1f));
         }
 
     }
-    public TMP_Text[] BdParts;
-    public Vector3 testPos;
-    IEnumerator BodyParts(bool on, float duration)
-    {
-        for (int i = 0; i < BdParts.Length; i++)
-        {
-            float startAlpha = BdParts[i].color.a;
-            float target = on ? 1f : 0f;
-            float elapsed = 0f;
-            while (elapsed < duration)
-            {
-                elapsed += Time.deltaTime;
-                float alpha = Mathf.Lerp(startAlpha, target, elapsed / duration);
-                BdParts[i].color = new Color(BdParts[i].color.r, BdParts[i].color.g, BdParts[i].color.b, alpha);
-                yield return null;
-            }
-            BdParts[i].color = new Color(BdParts[i].color.r, BdParts[i].color.g, BdParts[i].color.b, target);
-        }
-
-    }
-    void BdpartsTextFollow()
-    {
-        for (int i = 0; i < BdParts.Length; i++)
-        {
-            BdParts[i].transform.forward = selfAimPose.forward;
-        }
-    }
-
     void PickUp()
     {
         float distance = Vector3.Distance(Camera.main.transform.position, transform.position);

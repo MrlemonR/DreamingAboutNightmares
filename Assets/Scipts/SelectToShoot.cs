@@ -31,24 +31,23 @@ public class SelectToShoot : MonoBehaviour
     }
     void mouseHover()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+        float DistanceHead = Vector3.Distance(Input.mousePosition, Texts[0].transform.position);
+        float DistanceHand = Vector3.Distance(Input.mousePosition, Texts[1].transform.position);
+        float DistanceLeg = Vector3.Distance(Input.mousePosition, Texts[2].transform.position);
         AimTarget newTarget = AimTarget.None;
-        if (Physics.Raycast(ray, out hit, 10f))
+        if (DistanceHead < 60f)
         {
-            switch (hit.collider.gameObject.name)
-            {
-                case "Headcollider":
-                    newTarget = AimTarget.Head;
-                    break;
-                case "ArmCollider":
-                    newTarget = AimTarget.Arm;
-                    break;
-                case "LegCollider":
-                    newTarget = AimTarget.Leg;
-                    break;
-            }
+            newTarget = AimTarget.Head;
         }
+        if (DistanceHand < 200f)
+        {
+            newTarget = AimTarget.Arm;
+        }
+        if (DistanceLeg < 60f)
+        {
+            newTarget = AimTarget.Leg;
+        }
+
         if (newTarget != currentTarget)
         {
             currentTarget = newTarget;

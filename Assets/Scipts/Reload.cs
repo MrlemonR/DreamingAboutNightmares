@@ -22,17 +22,20 @@ public class Reload : MonoBehaviour
     public Transform ReloadPosition;
     public Transform HeadPosition;
     public MeshRenderer[] BulletLoc;
+    public GameObject[] BulletColliders;
     void Start()
     {
         CloseBulletts();
     }
     void Update()
     {
+        if (gameObject.GetComponent<Revolver>().canpickup) return;
+        
         if (!gameObject.GetComponent<Revolver>().selfAimMode && Input.GetMouseButtonDown(1))
         {
             Openreload();
             Cursor.lockState = CursorLockMode.None;
-        }   
+        }
         if (!gameObject.GetComponent<Revolver>().selfAimMode && Input.GetMouseButton(1))
         {
             HoverToReload();
@@ -45,56 +48,49 @@ public class Reload : MonoBehaviour
             CloseBulletts();
         }
     }
-    int ExistBulletPos;
-    Vector3 HitPoint;
+    int ExistBulletPos = 5;
     void HoverToReload()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 10f))
+        float distance1 = Vector3.Distance(Input.mousePosition, BulletColliders[0].transform.position);
+        float distance2 = Vector3.Distance(Input.mousePosition, BulletColliders[1].transform.position);
+        float distance3 = Vector3.Distance(Input.mousePosition, BulletColliders[2].transform.position);
+        float distance4 = Vector3.Distance(Input.mousePosition, BulletColliders[3].transform.position);
+        float distance5 = Vector3.Distance(Input.mousePosition, BulletColliders[4].transform.position);
+        if (distance1 < 50f)
         {
-            HitPoint = hit.point;
-            Debug.Log(hit.collider.gameObject.name);
-            switch (hit.collider.gameObject.name)
-            {
-                case "BulletPos1":
-                    if (ExistBulletPos == 0) return;
-                    CloseBulletts();
-                    BulletLoc[0].enabled = true;
-                    PlaceBullet(0);
-                    break;
-                case "BulletPos2":
-                    if (ExistBulletPos == 1) return;
-                    CloseBulletts();
-                    BulletLoc[1].enabled = true;
-                    PlaceBullet(1);
-                    break;
-                case "BulletPos3":
-                    if (ExistBulletPos == 2) return;
-                    CloseBulletts();
-                    BulletLoc[2].enabled = true;
-                    PlaceBullet(2);
-                    break;
-                case "BulletPos4":
-                    if (ExistBulletPos == 3) return;
-                    CloseBulletts();
-                    BulletLoc[3].enabled = true;
-                    PlaceBullet(3);
-                    break;
-                case "BulletPos5":
-                    if (ExistBulletPos == 4) return;
-                    CloseBulletts();
-                    BulletLoc[4].enabled = true;
-                    PlaceBullet(4);
-                    break;
-                case "BulletPos6":
-                    if (ExistBulletPos == 5) return;
-                    CloseBulletts();
-                    BulletLoc[5].enabled = true;
-                    PlaceBullet(5);
-                    break;
-            }
+            if (ExistBulletPos == 0) return;
+            CloseBulletts();
+            BulletLoc[0].enabled = true;
+            PlaceBullet(0);
         }
+        if (distance2 < 50f)
+        {
+            if (ExistBulletPos == 1) return;
+            CloseBulletts();
+            BulletLoc[1].enabled = true;
+            PlaceBullet(1);
+        }
+        if (distance3 < 50f)
+        {
+            if (ExistBulletPos == 2) return;
+            CloseBulletts();
+            BulletLoc[2].enabled = true;
+            PlaceBullet(2);
+        }
+        if (distance4 < 50f)
+        {
+            if (ExistBulletPos == 3) return;
+            CloseBulletts();
+            BulletLoc[3].enabled = true;
+            PlaceBullet(3);
+        }
+        if (distance5 < 50f)
+        {
+            if (ExistBulletPos == 4) return;
+            CloseBulletts();
+            BulletLoc[4].enabled = true;
+            PlaceBullet(4);
+        }   
     }
     GameObject currentBullet;
     void PlaceBullet(int position)
@@ -211,12 +207,5 @@ public class Reload : MonoBehaviour
             transform.localRotation = Quaternion.Slerp(StartRot, EndRot, frac);
             yield return null;
         }
-    }
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(HitPoint, 0.1f);
-
-        Gizmos.DrawLine(Camera.main.transform.position, HitPoint);
     }
 }
