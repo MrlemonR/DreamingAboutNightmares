@@ -30,6 +30,8 @@ public class Reload : MonoBehaviour
         {
             Openreload();
             Cursor.lockState = CursorLockMode.None;
+            playerController.WalkingSound.Stop();
+            playerController.RunningSound.Stop();
         }
         if (!gameObject.GetComponent<Revolver>().selfAimMode && Input.GetMouseButton(1))
         {
@@ -43,7 +45,7 @@ public class Reload : MonoBehaviour
             CloseBulletts();
         }
     }
-    int ExistBulletPos = 5;
+    public int ExistBulletPos = 5;
     void HoverToReload()
     {
         float distance1 = Vector3.Distance(Input.mousePosition, BulletColliders[0].transform.position);
@@ -87,7 +89,7 @@ public class Reload : MonoBehaviour
             PlaceBullet(4);
         }   
     }
-    GameObject currentBullet;
+    public GameObject currentBullet;
     void PlaceBullet(int position)
     {
         if (Input.GetMouseButtonDown(0))
@@ -101,6 +103,10 @@ public class Reload : MonoBehaviour
             ExistBulletPos = position;
             Player.GetComponent<PlayerData>().SavePlayer();
         }
+    }
+    public void DestroyBullet()
+    {
+        Destroy(currentBullet);
     }
 
     void CloseBulletts()

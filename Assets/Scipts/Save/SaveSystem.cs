@@ -34,4 +34,12 @@ public static class SaveSystem
             return null;
         }
     }
+    public static void DeleteSaveFile()
+    {
+        string path = Application.persistentDataPath + "/player.bombo";
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+    }
 }

@@ -62,7 +62,12 @@ public class SelectToShoot : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
+            Reload reload = gameObject.GetComponent<Reload>();
+            if (reload.currentBullet == null) return;
             Player.GetComponent<PlayerData>().LoadPlayer();
+            reload.ExistBulletPos = 5;
+            reload.DestroyBullet();
+            reload.currentBullet = null;
         }
     }
     int TargetToIndex(AimTarget target)

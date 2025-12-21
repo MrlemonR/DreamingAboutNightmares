@@ -76,6 +76,8 @@ public class Revolver : MonoBehaviour
             playerCon.canLook = false;
             playerCon.canMove = false;
             Cursor.lockState = CursorLockMode.None;
+            playerCon.WalkingSound.Stop();
+            playerCon.RunningSound.Stop();
 
 
             float duration = 0.5f;
