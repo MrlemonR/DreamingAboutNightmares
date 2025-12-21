@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 public class SelectToShoot : MonoBehaviour
 {
     public Camera cam;
+    public GameObject Player;
     public GameObject revolver;
     public Transform[] LookPositions; //1: Head, 2: Hands, 3: Legs
     public Transform[] MovePositions; //1: Head, 2: Hands, 3: Legs
@@ -58,6 +59,10 @@ public class SelectToShoot : MonoBehaviour
                 StartCoroutine(RevolverMoveTo(index));
                 StartCoroutine(TextColorChange(index));
             }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Player.GetComponent<PlayerData>().LoadPlayer();
         }
     }
     int TargetToIndex(AimTarget target)

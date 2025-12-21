@@ -4,12 +4,6 @@ using Unity.VisualScripting;
 using UnityEditor;
 public class Reload : MonoBehaviour
 {
-    public class PlayerLocation
-    {
-        public Vector3 PlayerPosition;
-        public Quaternion PlayerRotation;
-    }
-
     public float reloadAimSensitivity = 2.5f;
     public float reloadHorizontalLimit = 6f;
     public float reloadVerticalLimit = 4f;
@@ -17,6 +11,7 @@ public class Reload : MonoBehaviour
     Vector2 reloadAimOffset;
     Quaternion reloadStartRot;
     public PlayerController playerController;
+    public GameObject Player;
     public GameObject Bullet;
     public Animator CylnderAnimator;
     public Transform ReloadPosition;
@@ -104,6 +99,7 @@ public class Reload : MonoBehaviour
             currentBullet = Instantiate(Bullet, BulletLoc[position].transform.position, BulletLoc[position].transform.rotation);
             currentBullet.transform.SetParent(BulletLoc[position].transform);
             ExistBulletPos = position;
+            Player.GetComponent<PlayerData>().SavePlayer();
         }
     }
 

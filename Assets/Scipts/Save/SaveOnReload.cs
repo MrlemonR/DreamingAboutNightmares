@@ -1,11 +1,13 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class SaveOnReload
 {
     public float[] position;
 
-    public void PlayerData (PlayerController player)
+    public SaveOnReload (PlayerData player) 
     {
         position = new float[3];
 
