@@ -2950,6 +2950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7e5b91ac8537e42b06e4c328c0a142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomNumber: 0
 --- !u!4 &640728805 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8444348841212609284, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
@@ -10509,6 +10510,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 81393756}
     - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
+      propertyPath: RoomNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
       propertyPath: OtherRooms.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -11201,6 +11206,10 @@ PrefabInstance:
       propertyPath: loadRoom
       value: 
       objectReference: {fileID: 358803599}
+    - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
+      propertyPath: RoomNumber
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
       propertyPath: OtherRooms.Array.size
       value: 3
@@ -13056,6 +13065,10 @@ MonoBehaviour:
   - {fileID: 1026635867}
   - {fileID: 2130681987}
   - {fileID: 1314930549}
+  Rooms:
+  - {fileID: 906457779}
+  - {fileID: 358803599}
+  - {fileID: 81393756}
 --- !u!114 &884925921507255835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13629,21 +13642,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 906457779}
     - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
+      propertyPath: RoomNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
       propertyPath: OtherRooms.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
       propertyPath: 'OtherRooms.Array.data[0]'
       value: 
-      objectReference: {fileID: 906457779}
+      objectReference: {fileID: 358803599}
     - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
       propertyPath: 'OtherRooms.Array.data[1]'
       value: 
-      objectReference: {fileID: 358803599}
+      objectReference: {fileID: 81393756}
     - target: {fileID: 466190698140352975, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
       propertyPath: 'OtherRooms.Array.data[2]'
       value: 
-      objectReference: {fileID: 81393756}
+      objectReference: {fileID: 1841947713}
     - target: {fileID: 2976797646792829790, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
       propertyPath: m_Name
       value: Door

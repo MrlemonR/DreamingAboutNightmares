@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using TMPro;
+using UnityEngine.UI;
 public class SelectToShoot : MonoBehaviour
 {
     public Camera cam;
@@ -11,11 +12,13 @@ public class SelectToShoot : MonoBehaviour
     public Transform[] MovePositions; //1: Head, 2: Hands, 3: Legs
     public TMP_Text[] Texts; //1: Head, 2: Hands, 3: Legs
     public GameObject[] Rooms;
+    public GameObject ShotExplosion;
 
     bool textcourtinestart = false;
     void Start()
     {
         StartCoroutine(TextActive(0f, 0f));
+        ShotExplosion.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 0f);
     }
     void Update()
     {
@@ -67,18 +70,21 @@ public class SelectToShoot : MonoBehaviour
     }
     IEnumerator ShootSelf()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        yield return new WaitForSeconds(1f);
         Reload reload = gameObject.GetComponent<Reload>();
-        RevolverShake(0f);
-        if (reload.currentBullet == null) StopCoroutine(ShootSelf());
-        BackInTimeEffect();
-        PlayerData player = Player.GetComponent<PlayerData>();
-        player.LoadPlayer();
-        LoadRoom(player.RoomNumber);
-        reload.ExistBulletPos = 5;
-        reload.DestroyBullet();
-        reload.currentBullet = null;
+        if (reload.currentBullet != null)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            ShotExplosion.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 1f);
+            yield return new WaitForSeconds(1f);
+            RevolverShake(0f);
+            BackInTimeEffect();
+            PlayerData player = Player.GetComponent<PlayerData>();
+            player.LoadPlayer();
+            LoadRoom(player.RoomNumber);
+            reload.ExistBulletPos = 5;
+            reload.DestroyBullet();
+            reload.currentBullet = null;
+        }
     }
     void LoadRoom(int index)
     {
@@ -88,13 +94,13 @@ public class SelectToShoot : MonoBehaviour
                 break;
             case 1:
                 Rooms[0].SetActive(true);
-                break;  
+                break;
             case 2:
                 Rooms[1].SetActive(true);
-                break;  
+                break;
             case 3:
                 Rooms[2].SetActive(true);
-                break;  
+                break;
         }
     }
     void BackInTimeEffect()
@@ -106,22 +112,38 @@ public class SelectToShoot : MonoBehaviour
         StartCoroutine(revo.TextActive(false, 0f));
         Player.GetComponent<PlayerController>().canLook = true;
         Player.GetComponent<PlayerController>().canMove = true;
+        StartCoroutine(FadeExplosion());
         StartCoroutine(ChangeFov());
         StartCoroutine(ChangeGamma());
 
     }
+    IEnumerator FadeExplosion()
+    {
+        Color startColor = new Color(1f, 1f, 1f, 1f);
+        Color endColor = new Color(1f, 1f, 1f, 0f);
+        float t = 0f;
+        while (t < 2f)
+        {
+            t += Time.deltaTime;
+            ShotExplosion.GetComponent<MeshRenderer>().material.color = Color.Lerp(startColor, endColor, t / 2f);
+            yield return null;
+        }
+        ShotExplosion.GetComponent<MeshRenderer>().material.color = endColor;
+    }
     IEnumerator ChangeGamma()
     {
-        RenderSettings.ambientLight = Color.white;
+        Color startColor = new Color(1.5f, 1.5f, 1.5f, 1f);
+        Color endColor = new Color(0.566f, 0.566f, 0.566f, 1);
+        RenderSettings.ambientLight = startColor;
         yield return new WaitForSeconds(1f);
         float t = 0f;
         while (t < 2f)
         {
             t += Time.deltaTime;
-            RenderSettings.ambientLight = Color.Lerp(Color.white, Color.grey, t / 2f);
+            RenderSettings.ambientLight = Color.Lerp(startColor, endColor, t / 2f);
             yield return null;
         }
-        RenderSettings.ambientLight = Color.gray;
+        RenderSettings.ambientLight = endColor;
     }
     IEnumerator ChangeFov()
     {
