@@ -10,6 +10,7 @@ public class SelectToShoot : MonoBehaviour
     public Transform[] LookPositions; //1: Head, 2: Hands, 3: Legs
     public Transform[] MovePositions; //1: Head, 2: Hands, 3: Legs
     public TMP_Text[] Texts; //1: Head, 2: Hands, 3: Legs
+    public GameObject[] Rooms;
 
     bool textcourtinestart = false;
     void Start()
@@ -66,14 +67,35 @@ public class SelectToShoot : MonoBehaviour
     }
     IEnumerator ShootSelf()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         yield return new WaitForSeconds(1f);
         Reload reload = gameObject.GetComponent<Reload>();
+        RevolverShake(0f);
         if (reload.currentBullet == null) StopCoroutine(ShootSelf());
         BackInTimeEffect();
-        Player.GetComponent<PlayerData>().LoadPlayer();
+        PlayerData player = Player.GetComponent<PlayerData>();
+        player.LoadPlayer();
+        LoadRoom(player.RoomNumber);
         reload.ExistBulletPos = 5;
         reload.DestroyBullet();
         reload.currentBullet = null;
+    }
+    void LoadRoom(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                break;
+            case 1:
+                Rooms[0].SetActive(true);
+                break;  
+            case 2:
+                Rooms[1].SetActive(true);
+                break;  
+            case 3:
+                Rooms[2].SetActive(true);
+                break;  
+        }
     }
     void BackInTimeEffect()
     {
@@ -84,7 +106,6 @@ public class SelectToShoot : MonoBehaviour
         StartCoroutine(revo.TextActive(false, 0f));
         Player.GetComponent<PlayerController>().canLook = true;
         Player.GetComponent<PlayerController>().canMove = true;
-        Cursor.lockState = CursorLockMode.Locked;
         StartCoroutine(ChangeFov());
         StartCoroutine(ChangeGamma());
 

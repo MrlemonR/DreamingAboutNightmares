@@ -38,4 +38,3 @@ public class TerrainTrigger : MonoBehaviour
         }
     }
 }
-//200323613      15792

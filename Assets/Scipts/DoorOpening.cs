@@ -17,6 +17,7 @@ public class DoorOpening : MonoBehaviour
     private int openTime = 0;
     public GameObject loadRoom;
     public GameObject[] OtherRooms;
+    public int RoomNumber;
     void Start()
     {
         StartCoroutine(TextActive(false, 0f));
@@ -38,6 +39,7 @@ public class DoorOpening : MonoBehaviour
                 StopAllCoroutines();
                 StartCoroutine(TextActive(false, 0.1f));
                 loadRoom.SetActive(true);
+                other.GetComponent<PlayerData>().RoomNumber = RoomNumber;
                 for (int i = 0; i < OtherRooms.Length; i++)
                 {
                     OtherRooms[i].SetActive(false);

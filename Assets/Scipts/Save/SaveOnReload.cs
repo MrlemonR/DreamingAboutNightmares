@@ -6,9 +6,11 @@ using System.Collections.Generic;
 public class SaveOnReload
 {
     public float[] position;
+    public int RoomNumber;
 
     public SaveOnReload (PlayerData player) 
     {
+        RoomNumber = player.RoomNumber;
         position = new float[3];
 
         position[0] = player.transform.position.x;

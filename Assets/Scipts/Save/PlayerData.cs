@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerData : MonoBehaviour
 {
+    public int RoomNumber;
     public void SavePlayer()
     {
         SaveSystem.SavePlayer(this);
@@ -10,6 +11,8 @@ public class PlayerData : MonoBehaviour
     public void LoadPlayer()
     {
         SaveOnReload data = SaveSystem.LoadPlayer();
+        
+        RoomNumber = data.RoomNumber;
 
         Vector3 position;
         position.x = data.position[0];
