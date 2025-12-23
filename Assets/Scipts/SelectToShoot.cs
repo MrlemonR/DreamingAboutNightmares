@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 public class SelectToShoot : MonoBehaviour
 {
     public Camera cam;
@@ -62,13 +61,61 @@ public class SelectToShoot : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            Reload reload = gameObject.GetComponent<Reload>();
-            if (reload.currentBullet == null) return;
-            Player.GetComponent<PlayerData>().LoadPlayer();
-            reload.ExistBulletPos = 5;
-            reload.DestroyBullet();
-            reload.currentBullet = null;
+            StartCoroutine(ShootSelf());
         }
+    }
+    IEnumerator ShootSelf()
+    {
+        yield return new WaitForSeconds(1f);
+        Reload reload = gameObject.GetComponent<Reload>();
+        if (reload.currentBullet == null) StopCoroutine(ShootSelf());
+        BackInTimeEffect();
+        Player.GetComponent<PlayerData>().LoadPlayer();
+        reload.ExistBulletPos = 5;
+        reload.DestroyBullet();
+        reload.currentBullet = null;
+    }
+    void BackInTimeEffect()
+    {
+        Revolver revo = gameObject.GetComponent<Revolver>();
+        revo.selfAimMode = false;
+        revo.CharacterMesh.SetActive(false);
+        revo.RevoOpenCloseVis(false);
+        StartCoroutine(revo.TextActive(false, 0f));
+        Player.GetComponent<PlayerController>().canLook = true;
+        Player.GetComponent<PlayerController>().canMove = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        StartCoroutine(ChangeFov());
+        StartCoroutine(ChangeGamma());
+
+    }
+    IEnumerator ChangeGamma()
+    {
+        RenderSettings.ambientLight = Color.white;
+        yield return new WaitForSeconds(1f);
+        float t = 0f;
+        while (t < 2f)
+        {
+            t += Time.deltaTime;
+            RenderSettings.ambientLight = Color.Lerp(Color.white, Color.grey, t / 2f);
+            yield return null;
+        }
+        RenderSettings.ambientLight = Color.gray;
+    }
+    IEnumerator ChangeFov()
+    {
+        float startFov = 25f;
+        float endFov = 60f;
+        float duration = 1f;
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float frac = t / duration;
+            Camera.main.fieldOfView = Mathf.Lerp(startFov, endFov, frac);
+            yield return null;
+        }
+        Camera.main.fieldOfView = 60f;
     }
     int TargetToIndex(AimTarget target)
     {

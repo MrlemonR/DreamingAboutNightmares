@@ -65,7 +65,7 @@ public class Revolver : MonoBehaviour
 
     }
     public Transform selfAimPose;
-    IEnumerator Aim()
+    public IEnumerator Aim()
     {
         Camera cam = Camera.main;
         Quaternion startRot = cam.transform.localRotation;
@@ -142,7 +142,7 @@ public class Revolver : MonoBehaviour
             }
         }
     }
-    IEnumerator TextActive(bool active, float duration)
+    public IEnumerator TextActive(bool active, float duration)
     {
         TMP_Text text = PressFText.GetComponent<TMP_Text>();
         float startAlpha = text.color.a;

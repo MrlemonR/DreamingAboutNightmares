@@ -2771,6 +2771,7 @@ GameObject:
   - component: {fileID: 624799444}
   - component: {fileID: 624799443}
   - component: {fileID: 624799442}
+  - component: {fileID: 624799448}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2937,6 +2938,18 @@ Transform:
   - {fileID: 2114866471}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &624799448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624799441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a7e5b91ac8537e42b06e4c328c0a142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &640728805 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8444348841212609284, guid: de3cee8c0a96ab646a18ab77d06c89bf, type: 3}
@@ -13029,6 +13042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 391425755}
+  Player: {fileID: 624799441}
   revolver: {fileID: 507837772632554658}
   LookPositions:
   - {fileID: 2077757394}
@@ -13058,6 +13072,7 @@ MonoBehaviour:
   reloadHorizontalLimit: 6
   reloadVerticalLimit: 4
   playerController: {fileID: 624799442}
+  Player: {fileID: 624799441}
   Bullet: {fileID: 8002479747662223151, guid: 0fce785033c8cb6499cc5fa7b579d818, type: 3}
   CylnderAnimator: {fileID: 3921635095221611595}
   ReloadPosition: {fileID: 46036376}
@@ -13074,6 +13089,8 @@ MonoBehaviour:
   - {fileID: 61439252}
   - {fileID: 936157878}
   - {fileID: 1292674015}
+  ExistBulletPos: 5
+  currentBullet: {fileID: 0}
 --- !u!4 &1219576127438981521
 Transform:
   m_ObjectHideFlags: 0
