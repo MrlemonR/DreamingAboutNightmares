@@ -13,6 +13,9 @@ public class SelectToShoot : MonoBehaviour
     public TMP_Text[] Texts; //1: Head, 2: Hands, 3: Legs
     public GameObject[] Rooms;
     public GameObject ShotExplosion;
+    public AudioSource EmptySound;
+    public AudioSource ShotSound;
+    public AudioSource[] AfterShotSounds;
 
     bool textcourtinestart = false;
     void Start()
@@ -73,6 +76,9 @@ public class SelectToShoot : MonoBehaviour
         Reload reload = gameObject.GetComponent<Reload>();
         if (reload.currentBullet != null)
         {
+            ShotSound.Play();
+            yield return new WaitForSeconds(0.2f);
+            ShotSound.Stop();
             Cursor.lockState = CursorLockMode.Locked;
             ShotExplosion.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 1f);
             yield return new WaitForSeconds(1f);
@@ -84,6 +90,12 @@ public class SelectToShoot : MonoBehaviour
             reload.ExistBulletPos = 5;
             reload.DestroyBullet();
             reload.currentBullet = null;
+            yield return new WaitForSeconds(1f);
+            SaveSystem.DeleteSaveFile();
+        }
+        else
+        {
+            EmptySound.Play();
         }
     }
     void LoadRoom(int index)
@@ -115,7 +127,10 @@ public class SelectToShoot : MonoBehaviour
         StartCoroutine(FadeExplosion());
         StartCoroutine(ChangeFov());
         StartCoroutine(ChangeGamma());
-
+        for (int i = 0; i < AfterShotSounds.Length; i++)
+        {
+            AfterShotSounds[i].Play();
+        }
     }
     IEnumerator FadeExplosion()
     {

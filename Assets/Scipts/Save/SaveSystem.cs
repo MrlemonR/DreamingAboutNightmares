@@ -10,7 +10,7 @@ public static class SaveSystem
         FileStream stream = new FileStream(path, FileMode.Create);
 
         SaveOnReload data = new SaveOnReload(player);
-
+        Debug.Log("Saved" + path);
         formatter.Serialize(stream, data);
         stream.Close();
     }
@@ -25,7 +25,7 @@ public static class SaveSystem
 
             SaveOnReload data = formatter.Deserialize(stream) as SaveOnReload;
             stream.Close();
-
+            Debug.Log("Loaded" + path);
             return data;
         }
         else
@@ -39,6 +39,7 @@ public static class SaveSystem
         string path = Application.persistentDataPath + "/player.bombo";
         if (File.Exists(path))
         {
+            Debug.Log("Deleted" + path);
             File.Delete(path);
         }
     }
