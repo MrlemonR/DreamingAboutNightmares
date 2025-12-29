@@ -11,6 +11,7 @@ public class SaveOnReload
     public SaveOnReload (PlayerData player) 
     {
         RoomNumber = player.RoomNumber;
+        
         position = new float[3];
 
         position[0] = player.transform.position.x;

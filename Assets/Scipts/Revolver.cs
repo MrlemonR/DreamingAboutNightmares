@@ -24,7 +24,7 @@ public class Revolver : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(TextActive(false, 0.1f));
+        StartCoroutine(TextActive(false, 0f));
         CharacterMesh.SetActive(false);
     }
     public bool selfAimMode = false;
