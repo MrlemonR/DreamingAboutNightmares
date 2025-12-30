@@ -1,8 +1,7 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using TMPro;
-using UnityEngine.UI;
 public class SelectToShoot : MonoBehaviour
 {
     public Camera cam;
@@ -76,17 +75,28 @@ public class SelectToShoot : MonoBehaviour
         Reload reload = gameObject.GetComponent<Reload>();
         if (reload.currentBullet != null)
         {
+            Revolver revo = gameObject.GetComponent<Revolver>();
+            revo.selfAimMode = false;
+            Cursor.lockState = CursorLockMode.Locked;
             ShotSound.Play();
             yield return new WaitForSeconds(0.2f);
             ShotSound.Stop();
-            Cursor.lockState = CursorLockMode.Locked;
             ShotExplosion.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 1f);
             yield return new WaitForSeconds(1f);
             RevolverShake(0f);
             BackInTimeEffect();
             PlayerData player = Player.GetComponent<PlayerData>();
             player.LoadPlayer();
-            LoadRoom(player.RoomNumber);
+            if (player.SceneName == SceneManager.GetActiveScene().name)
+            {
+                LoadRoom(player.RoomNumber);
+            }
+            else
+            {
+                yield return new WaitForSeconds(1f);
+                SceneManager.LoadScene(player.SceneName);
+                yield break;
+            }
             reload.ExistBulletPos = 5;
             reload.DestroyBullet();
             reload.currentBullet = null;
@@ -100,6 +110,7 @@ public class SelectToShoot : MonoBehaviour
     }
     void LoadRoom(int index)
     {
+        if (Rooms == null || Rooms.Length == 0) return;
         switch (index)
         {
             case 0:
@@ -118,7 +129,6 @@ public class SelectToShoot : MonoBehaviour
     void BackInTimeEffect()
     {
         Revolver revo = gameObject.GetComponent<Revolver>();
-        revo.selfAimMode = false;
         revo.CharacterMesh.SetActive(false);
         revo.RevoOpenCloseVis(false);
         StartCoroutine(revo.TextActive(false, 0f));

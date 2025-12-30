@@ -7,10 +7,16 @@ public class SaveOnReload
 {
     public float[] position;
     public int RoomNumber;
+    public string SceneName;
+    public bool hasBullet;
+    public int bulletPos;
 
-    public SaveOnReload (PlayerData player) 
+    public SaveOnReload(PlayerData player)
     {
         RoomNumber = player.RoomNumber;
+        SceneName = player.SceneName;
+        hasBullet = player.hasBullet;
+        bulletPos = player.bulletPos;
         
         position = new float[3];
 

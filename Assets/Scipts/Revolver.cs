@@ -144,7 +144,9 @@ public class Revolver : MonoBehaviour
     }
     public IEnumerator TextActive(bool active, float duration)
     {
+        if (PressFText == null) yield break;
         TMP_Text text = PressFText.GetComponent<TMP_Text>();
+        if (text == null) yield break;
         float startAlpha = text.color.a;
         float target = active ? 1f : 0f;
         float elapsed = 0f;

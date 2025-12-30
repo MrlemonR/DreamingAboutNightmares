@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 public class Reload : MonoBehaviour
 {
     public float reloadAimSensitivity = 2.5f;
@@ -21,11 +22,12 @@ public class Reload : MonoBehaviour
     void Start()
     {
         CloseBulletts();
+        LoadBulletFromSave();
     }
     void Update()
     {
         if (gameObject.GetComponent<Revolver>().canpickup) return;
-        
+
         if (!gameObject.GetComponent<Revolver>().selfAimMode && Input.GetMouseButtonDown(1))
         {
             Openreload();
@@ -87,7 +89,7 @@ public class Reload : MonoBehaviour
             CloseBulletts();
             BulletLoc[4].enabled = true;
             PlaceBullet(4);
-        }   
+        }
     }
     public GameObject currentBullet;
     void PlaceBullet(int position)
@@ -101,7 +103,30 @@ public class Reload : MonoBehaviour
             currentBullet = Instantiate(Bullet, BulletLoc[position].transform.position, BulletLoc[position].transform.rotation);
             currentBullet.transform.SetParent(BulletLoc[position].transform);
             ExistBulletPos = position;
-            Player.GetComponent<PlayerData>().SavePlayer();
+            PlayerData playerdata = Player.GetComponent<PlayerData>();
+            playerdata.SceneName = SceneManager.GetActiveScene().name;
+            playerdata.hasBullet = true;
+            playerdata.bulletPos = position;
+            playerdata.SavePlayer();
+        }
+    }
+    void LoadBulletFromSave()
+    {
+        PlayerData playerdata = Player.GetComponent<PlayerData>();
+        if (playerdata.hasBullet)
+        {
+            int position = playerdata.bulletPos;
+            ExistBulletPos = position;
+
+            if (currentBullet != null)
+            {
+                Destroy(currentBullet);
+            }
+
+            currentBullet = Instantiate(Bullet, BulletLoc[position].transform.position, BulletLoc[position].transform.rotation);
+            currentBullet.transform.SetParent(BulletLoc[position].transform);
+            currentBullet.SetActive(false);
+            Debug.Log("loaded bullets");
         }
     }
     public void DestroyBullet()

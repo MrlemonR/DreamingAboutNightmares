@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GotoSleep : MonoBehaviour
 {
@@ -97,6 +98,8 @@ public class GotoSleep : MonoBehaviour
             yield return null;
         }
         SleepImage.color = new Color(SleepImage.color.r, SleepImage.color.g, SleepImage.color.b, endAlpha);
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("AboveClouds");
     }
     IEnumerator ChangeCamLoc()
     {

@@ -11,6 +11,7 @@ public static class SaveSystem
 
         SaveOnReload data = new SaveOnReload(player);
         Debug.Log("Saved" + path);
+        Debug.Log($"Scene: {data.SceneName}, Room: {data.RoomNumber}, HasBullet: {data.hasBullet}, BulletPos: {data.bulletPos}");
         formatter.Serialize(stream, data);
         stream.Close();
     }
@@ -26,6 +27,7 @@ public static class SaveSystem
             SaveOnReload data = formatter.Deserialize(stream) as SaveOnReload;
             stream.Close();
             Debug.Log("Loaded" + path);
+            Debug.Log($"Scene: {data.SceneName}, Room: {data.RoomNumber}, HasBullet: {data.hasBullet}, BulletPos: {data.bulletPos}");
             return data;
         }
         else
