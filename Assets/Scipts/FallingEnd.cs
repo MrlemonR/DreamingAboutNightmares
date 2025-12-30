@@ -10,7 +10,14 @@ public class Falling : MonoBehaviour
     public AudioSource FallSound;
     void Start()
     {
-        StartCoroutine(WaitUntillFall());
+        if (Player.GetComponent<PlayerData>().SceneName == "TheHub")
+        {
+            particle.Stop();
+        }
+        else
+        {
+            StartCoroutine(WaitUntillFall());
+        }
     }
     private IEnumerator WaitUntillFall()
     {

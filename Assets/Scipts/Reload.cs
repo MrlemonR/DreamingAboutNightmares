@@ -22,8 +22,14 @@ public class Reload : MonoBehaviour
     void Start()
     {
         CloseBulletts();
-        LoadBulletFromSave();
+
+        SaveOnReload data = SaveSystem.LoadPlayer();
+        if (data != null && data.hasBullet)
+        {
+            LoadBulletFromSave(data);
+        }
     }
+
     void Update()
     {
         if (gameObject.GetComponent<Revolver>().canpickup) return;
@@ -110,30 +116,30 @@ public class Reload : MonoBehaviour
             playerdata.SavePlayer();
         }
     }
-    void LoadBulletFromSave()
+    void LoadBulletFromSave(SaveOnReload data)
     {
-        PlayerData playerdata = Player.GetComponent<PlayerData>();
-        if (playerdata.hasBullet)
-        {
-            int position = playerdata.bulletPos;
-            ExistBulletPos = position;
+        int position = data.bulletPos;
+        ExistBulletPos = position;
 
-            if (currentBullet != null)
-            {
-                Destroy(currentBullet);
-            }
+        if (currentBullet != null)
+            Destroy(currentBullet);
 
-            currentBullet = Instantiate(Bullet, BulletLoc[position].transform.position, BulletLoc[position].transform.rotation);
-            currentBullet.transform.SetParent(BulletLoc[position].transform);
-            currentBullet.SetActive(false);
-            Debug.Log("loaded bullets");
-        }
+        currentBullet = Instantiate(
+            Bullet,
+            BulletLoc[position].transform.position,
+            BulletLoc[position].transform.rotation
+        );
+
+        currentBullet.transform.SetParent(BulletLoc[position].transform);
+        currentBullet.SetActive(false);
+
+        Debug.Log("Bullet loaded from save");
     }
+
     public void DestroyBullet()
     {
         Destroy(currentBullet);
     }
-
     void CloseBulletts()
     {
         for (int i = 0; i < BulletLoc.Length; i++)

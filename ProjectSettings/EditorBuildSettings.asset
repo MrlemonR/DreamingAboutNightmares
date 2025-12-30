@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TheHub.unity
     guid: 373a2e84dd1d2674fb4ff3c59f14dc05
+  - enabled: 1
+    path: Assets/Scenes/AboveClouds.unity
+    guid: 9a4656063c85cb840ba7e79f75307105
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

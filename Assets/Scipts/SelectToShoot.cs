@@ -84,24 +84,30 @@ public class SelectToShoot : MonoBehaviour
             ShotExplosion.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 1f);
             yield return new WaitForSeconds(1f);
             RevolverShake(0f);
-            BackInTimeEffect();
             PlayerData player = Player.GetComponent<PlayerData>();
             player.LoadPlayer();
             if (player.SceneName == SceneManager.GetActiveScene().name)
             {
                 LoadRoom(player.RoomNumber);
+                BackInTimeEffect();
+                reload.ExistBulletPos = 5;
+                reload.DestroyBullet();
+                reload.currentBullet = null;
+                yield return new WaitForSeconds(1f);
+                SaveSystem.DeleteSaveFile();
+
             }
             else
             {
-                yield return new WaitForSeconds(1f);
                 SceneManager.LoadScene(player.SceneName);
+                BackInTimeEffect();
+                reload.ExistBulletPos = 5;
+                reload.DestroyBullet();
+                reload.currentBullet = null;
+                yield return new WaitForSeconds(1f);
+                SaveSystem.DeleteSaveFile();
                 yield break;
             }
-            reload.ExistBulletPos = 5;
-            reload.DestroyBullet();
-            reload.currentBullet = null;
-            yield return new WaitForSeconds(1f);
-            SaveSystem.DeleteSaveFile();
         }
         else
         {
