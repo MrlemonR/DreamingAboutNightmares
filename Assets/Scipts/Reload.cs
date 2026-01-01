@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine.SceneManagement;
+
 public class Reload : MonoBehaviour
 {
     public float reloadAimSensitivity = 2.5f;
@@ -19,15 +18,12 @@ public class Reload : MonoBehaviour
     public Transform HeadPosition;
     public MeshRenderer[] BulletLoc;
     public GameObject[] BulletColliders;
+    public int ExistBulletPos = 5;
+    public GameObject currentBullet;
+
     void Start()
     {
         CloseBulletts();
-
-        SaveOnReload data = SaveSystem.LoadPlayer();
-        if (data != null && data.hasBullet)
-        {
-            LoadBulletFromSave(data);
-        }
     }
 
     void Update()
@@ -53,7 +49,7 @@ public class Reload : MonoBehaviour
             CloseBulletts();
         }
     }
-    public int ExistBulletPos = 5;
+
     void HoverToReload()
     {
         float distance1 = Vector3.Distance(Input.mousePosition, BulletColliders[0].transform.position);
@@ -61,6 +57,7 @@ public class Reload : MonoBehaviour
         float distance3 = Vector3.Distance(Input.mousePosition, BulletColliders[2].transform.position);
         float distance4 = Vector3.Distance(Input.mousePosition, BulletColliders[3].transform.position);
         float distance5 = Vector3.Distance(Input.mousePosition, BulletColliders[4].transform.position);
+
         if (distance1 < 50f)
         {
             if (ExistBulletPos == 0) return;
@@ -97,7 +94,7 @@ public class Reload : MonoBehaviour
             PlaceBullet(4);
         }
     }
-    public GameObject currentBullet;
+
     void PlaceBullet(int position)
     {
         if (Input.GetMouseButtonDown(0))
@@ -109,6 +106,7 @@ public class Reload : MonoBehaviour
             currentBullet = Instantiate(Bullet, BulletLoc[position].transform.position, BulletLoc[position].transform.rotation);
             currentBullet.transform.SetParent(BulletLoc[position].transform);
             ExistBulletPos = position;
+            
             PlayerData playerdata = Player.GetComponent<PlayerData>();
             playerdata.SceneName = SceneManager.GetActiveScene().name;
             playerdata.hasBullet = true;
@@ -116,30 +114,39 @@ public class Reload : MonoBehaviour
             playerdata.SavePlayer();
         }
     }
-    void LoadBulletFromSave(SaveOnReload data)
+    public void LoadBulletFromSave()
     {
-        int position = data.bulletPos;
-        ExistBulletPos = position;
+        SaveOnReload data = SaveSystem.LoadPlayer();
+        if (data != null && data.hasBullet)
+        {
+            int position = data.bulletPos;
+            ExistBulletPos = position;
 
-        if (currentBullet != null)
-            Destroy(currentBullet);
+            if (currentBullet != null)
+                Destroy(currentBullet);
 
-        currentBullet = Instantiate(
-            Bullet,
-            BulletLoc[position].transform.position,
-            BulletLoc[position].transform.rotation
-        );
+            currentBullet = Instantiate(
+                Bullet,
+                BulletLoc[position].transform.position,
+                BulletLoc[position].transform.rotation
+            );
 
-        currentBullet.transform.SetParent(BulletLoc[position].transform);
-        currentBullet.SetActive(false);
+            currentBullet.transform.SetParent(BulletLoc[position].transform);
+            currentBullet.SetActive(false);
 
-        Debug.Log("Bullet loaded from save");
+            Debug.Log("Bullet loaded from save");
+        }
     }
 
     public void DestroyBullet()
     {
-        Destroy(currentBullet);
+        if (currentBullet != null)
+        {
+            Destroy(currentBullet);
+            currentBullet = null;
+        }
     }
+
     void CloseBulletts()
     {
         for (int i = 0; i < BulletLoc.Length; i++)
@@ -147,6 +154,7 @@ public class Reload : MonoBehaviour
             BulletLoc[i].enabled = false;
         }
     }
+
     void ReloadCameraAim()
     {
         float mx = Input.GetAxis("Mouse X");
@@ -170,12 +178,13 @@ public class Reload : MonoBehaviour
         CylnderAnimator.Play("RevolverOpenClynder");
         playerController.canLook = false;
         playerController.canMove = false;
-        gameObject.GetComponent<Revolver>().RevoOpenCloseVis(transform);
+        gameObject.GetComponent<Revolver>().RevoOpenCloseVis(true);
         StartCoroutine(RevoChangePos());
         StartCoroutine(RevoChangeRot());
         StartCoroutine(ChangeFov(true));
         if (currentBullet != null) currentBullet.SetActive(true);
     }
+
     void CloseReload()
     {
         StopAllCoroutines();
@@ -187,6 +196,7 @@ public class Reload : MonoBehaviour
         StartCoroutine(ChangeFov(false));
         if (currentBullet != null) currentBullet.SetActive(false);
     }
+
     void RevoChangeParent(bool active)
     {
         if (active) transform.SetParent(Camera.main.transform);
@@ -195,7 +205,6 @@ public class Reload : MonoBehaviour
 
     IEnumerator ChangeFov(bool active)
     {
-
         float startFov = Camera.main.fieldOfView;
         float endFov = active ? 25f : 60f;
 
@@ -210,6 +219,7 @@ public class Reload : MonoBehaviour
         }
         Camera.main.fieldOfView = endFov;
     }
+
     IEnumerator RevoChangePos()
     {
         Vector3 StartPos = transform.localPosition;
@@ -226,6 +236,7 @@ public class Reload : MonoBehaviour
         }
         transform.localPosition = EndPos;
     }
+
     IEnumerator RevoChangeRot()
     {
         Quaternion StartRot = transform.localRotation;
@@ -240,5 +251,6 @@ public class Reload : MonoBehaviour
             transform.localRotation = Quaternion.Slerp(StartRot, EndRot, frac);
             yield return null;
         }
+        transform.localRotation = EndRot;
     }
 }

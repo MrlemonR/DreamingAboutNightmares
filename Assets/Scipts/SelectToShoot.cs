@@ -89,7 +89,7 @@ public class SelectToShoot : MonoBehaviour
             if (player.SceneName == SceneManager.GetActiveScene().name)
             {
                 LoadRoom(player.RoomNumber);
-                BackInTimeEffect();
+                StartCoroutine(BackInTimeEffect());
                 reload.ExistBulletPos = 5;
                 reload.DestroyBullet();
                 reload.currentBullet = null;
@@ -100,7 +100,7 @@ public class SelectToShoot : MonoBehaviour
             else
             {
                 SceneManager.LoadScene(player.SceneName);
-                BackInTimeEffect();
+                StartCoroutine(BackInTimeEffect());
                 reload.ExistBulletPos = 5;
                 reload.DestroyBullet();
                 reload.currentBullet = null;
@@ -132,7 +132,7 @@ public class SelectToShoot : MonoBehaviour
                 break;
         }
     }
-    void BackInTimeEffect()
+    IEnumerator BackInTimeEffect()
     {
         Revolver revo = gameObject.GetComponent<Revolver>();
         revo.CharacterMesh.SetActive(false);
@@ -140,6 +140,7 @@ public class SelectToShoot : MonoBehaviour
         StartCoroutine(revo.TextActive(false, 0f));
         Player.GetComponent<PlayerController>().canLook = true;
         Player.GetComponent<PlayerController>().canMove = true;
+        yield return new WaitForSeconds(0.2f);
         StartCoroutine(FadeExplosion());
         StartCoroutine(ChangeFov());
         StartCoroutine(ChangeGamma());
@@ -182,6 +183,7 @@ public class SelectToShoot : MonoBehaviour
         float endFov = 60f;
         float duration = 1f;
         float t = 0f;
+        Camera.main.fieldOfView = startFov;
         while (t < duration)
         {
             t += Time.deltaTime;

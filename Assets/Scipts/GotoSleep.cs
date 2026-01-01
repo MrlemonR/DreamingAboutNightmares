@@ -67,6 +67,7 @@ public class GotoSleep : MonoBehaviour
                 else
                 {
                     //Going To Sleep
+                    Player.GetComponent<PlayerController>().canHearSound = false;
                     Player.GetComponent<PlayerController>().canLook = false;
                     Player.GetComponent<PlayerController>().canMove = false;
                     StartCoroutine(TextOpenClose(false));
