@@ -8,6 +8,7 @@ public class Closed : MonoBehaviour
     void Start()
     {
         animator = this.GetComponent<Animator>();
+        FindReferences();
     }
     bool isOpen = false;
     void Update()
@@ -26,5 +27,9 @@ public class Closed : MonoBehaviour
             animator.Play("ClosedClose");
             isOpen = false;
         }
+    }
+    void FindReferences()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 }

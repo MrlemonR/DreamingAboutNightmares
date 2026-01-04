@@ -3,13 +3,14 @@ using TMPro;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class GotoSleep : MonoBehaviour
 {
     public GameObject Player;
     public GameObject Dormitory;
     public GameObject Pillow;
-    //public GameObject Duvet;
+    public GameObject Duvet;
     public TMP_Text text;
     public TMP_Text talkText;
     public Image SleepImage;
@@ -25,6 +26,7 @@ public class GotoSleep : MonoBehaviour
     void Update()
     {
         StartCoroutine(Sleep());
+        FindReferences();
     }
     IEnumerator Sleep()
     {
@@ -39,7 +41,7 @@ public class GotoSleep : MonoBehaviour
             if (Input.GetKey(KeyCode.F))
             {
                 if (Pillow.GetComponent<Collectable>().isCollected) GetPillow = true;
-                //if (Duvet.GetComponent<Collectable>().isCollected) Getduvet = true;
+                if (Duvet.GetComponent<Collectable>().isCollected) Getduvet = true;
                 if (!GetPillow && !Getduvet)
                 {
                     if (TalkCourtineStart) StopCoroutine(Sleep());
@@ -48,22 +50,22 @@ public class GotoSleep : MonoBehaviour
                     yield return new WaitForSeconds(2f);
                     StartCoroutine(TalkTextFade(false));
                 }
-                // else if (!GetPillow && Getduvet)
-                // {
-                //     if (TalkCourtineStart) StopCoroutine(Sleep());
-                //     talkText.text = "I cant't sleep now, I need pillow.";
-                //     StartCoroutine(TalkTextFade(true));
-                //     yield return new WaitForSeconds(2f);
-                //     StartCoroutine(TalkTextFade(false));
-                // }
-                // else if (!Getduvet && GetPillow)
-                // {
-                //     if (TalkCourtineStart) StopCoroutine(Sleep());
-                //     talkText.text = "I cant't sleep now, I need duvet.";
-                //     StartCoroutine(TalkTextFade(true));
-                //     yield return new WaitForSeconds(2f);
-                //     StartCoroutine(TalkTextFade(false));
-                // }
+                else if (!GetPillow && Getduvet)
+                {
+                    if (TalkCourtineStart) StopCoroutine(Sleep());
+                    talkText.text = "I cant't sleep now, I need pillow.";
+                    StartCoroutine(TalkTextFade(true));
+                    yield return new WaitForSeconds(2f);
+                    StartCoroutine(TalkTextFade(false));
+                }
+                else if (!Getduvet && GetPillow)
+                {
+                    if (TalkCourtineStart) StopCoroutine(Sleep());
+                    talkText.text = "I cant't sleep now, I need duvet.";
+                    StartCoroutine(TalkTextFade(true));
+                    yield return new WaitForSeconds(2f);
+                    StartCoroutine(TalkTextFade(false));
+                }
                 else
                 {
                     //Going To Sleep
@@ -79,10 +81,7 @@ public class GotoSleep : MonoBehaviour
         }
         else
         {
-            if (!courtineStart)
-            {
-                StartCoroutine(TextOpenClose(false));
-            }
+            StartCoroutine(TextOpenClose(false));
         }
     }
     IEnumerator GoDark()
@@ -143,7 +142,7 @@ public class GotoSleep : MonoBehaviour
         while (t < 0.5f)
         {
             t += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, endAlpha, t / 1f);
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, t / 0.5f);
             text.color = new Color(text.color.r, text.color.g, text.color.b, alpha);
             yield return null;
         }
@@ -170,5 +169,9 @@ public class GotoSleep : MonoBehaviour
         talkText.color = new Color(talkText.color.r, talkText.color.g, talkText.color.b, endAlpha);
 
         TalkCourtineStart = false;
+    }
+    void FindReferences()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 }

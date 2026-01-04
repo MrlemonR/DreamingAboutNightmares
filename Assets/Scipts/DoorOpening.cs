@@ -23,6 +23,7 @@ public class DoorOpening : MonoBehaviour
     {
         Pressf = PressF.GetComponent<PressFScript>();
         StartCoroutine(Pressf.TextActive(false, 0f));
+        FindReferences();
     }
     void OnTriggerEnter(Collider other)
     {
@@ -63,5 +64,9 @@ public class DoorOpening : MonoBehaviour
                 isOpened = false;
             }
         }
+    }
+    void FindReferences()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 }
