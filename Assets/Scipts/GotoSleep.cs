@@ -25,8 +25,8 @@ public class GotoSleep : MonoBehaviour
     }
     void Update()
     {
-        StartCoroutine(Sleep());
         FindReferences();
+        StartCoroutine(Sleep());
     }
     IEnumerator Sleep()
     {

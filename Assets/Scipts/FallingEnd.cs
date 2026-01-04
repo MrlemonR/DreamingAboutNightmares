@@ -2,22 +2,37 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Falling : MonoBehaviour
+public class FallingEnd : MonoBehaviour
 {
     public GameObject Player;
     public GameObject Trigger;
     public ParticleSystem particle;
     public AudioSource FallSound;
+    public RenderTexture RenderTexture;
     void Start()
     {
-        if (Player.GetComponent<PlayerData>().SceneName == "TheHub")
+        Camera.main.targetTexture = RenderTexture;
+        SaveOnReload data = SaveSystem.LoadPlayer();
+        if (data != null)
         {
-            particle.Stop();
+            Debug.Log("Loaded Scene: " + data.SceneName);
+
+            if (data.SceneName == "TheHub")
+            {
+                if (particle != null)
+                {
+                    particle.Stop();
+                }
+            }
         }
         else
         {
             StartCoroutine(WaitUntillFall());
         }
+    }
+    void Update()
+    {
+        if (Player == null) FindReferences();
     }
     private IEnumerator WaitUntillFall()
     {
@@ -60,5 +75,10 @@ public class Falling : MonoBehaviour
             StartCoroutine(FallSoundStart());
             Camera.main.farClipPlane = 300f;
         }
+    }
+    void FindReferences()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+        particle = ParticleSystem.FindAnyObjectByType<ParticleSystem>();
     }
 }

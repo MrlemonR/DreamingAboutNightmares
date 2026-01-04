@@ -32,7 +32,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.Log("File Not Found nigga " + path);
+            Debug.Log("File Not Found" + path);
             return null;
         }
     }
