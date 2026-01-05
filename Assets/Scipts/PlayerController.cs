@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
     public bool canMove = true;
     public bool canLook = true;
+    public bool canUseRevolver = true;
 
     void Start()
     {

@@ -28,21 +28,23 @@ public class Reload : MonoBehaviour
 
     void Update()
     {
-        if (gameObject.GetComponent<Revolver>().canpickup) return;
+        Revolver revolver = gameObject.GetComponent<Revolver>();
 
-        if (!gameObject.GetComponent<Revolver>().selfAimMode && Input.GetMouseButtonDown(1))
+        if (revolver.canpickup) return;
+
+        if (!revolver.selfAimMode && playerController.canUseRevolver && Input.GetMouseButtonDown(1))
         {
             Openreload();
             Cursor.lockState = CursorLockMode.None;
             playerController.WalkingSound.Stop();
             playerController.RunningSound.Stop();
         }
-        if (!gameObject.GetComponent<Revolver>().selfAimMode && Input.GetMouseButton(1))
+        if (!revolver.selfAimMode && playerController.canUseRevolver &&  Input.GetMouseButton(1))
         {
             HoverToReload();
             ReloadCameraAim();
         }
-        if (!gameObject.GetComponent<Revolver>().selfAimMode && Input.GetMouseButtonUp(1))
+        if (!revolver.selfAimMode && playerController.canUseRevolver && Input.GetMouseButtonUp(1))
         {
             CloseReload();
             Cursor.lockState = CursorLockMode.Locked;

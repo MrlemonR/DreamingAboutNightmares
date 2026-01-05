@@ -69,9 +69,13 @@ public class GotoSleep : MonoBehaviour
                 else
                 {
                     //Going To Sleep
-                    Player.GetComponent<PlayerController>().canHearSound = false;
-                    Player.GetComponent<PlayerController>().canLook = false;
-                    Player.GetComponent<PlayerController>().canMove = false;
+                    PlayerController player = Player.GetComponent<PlayerController>();
+                    player.canUseRevolver = false;
+                    player.canMove = false;
+                    player.canLook = false;
+                    player.canHearSound = false;
+                    player.WalkingSound.Stop();
+                    player.RunningSound.Stop();
                     StartCoroutine(TextOpenClose(false));
                     StartCoroutine(ChangeCamLoc());
                     StartCoroutine(ChangeCamRot());

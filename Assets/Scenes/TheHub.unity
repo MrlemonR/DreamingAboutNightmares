@@ -7434,7 +7434,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 100
-  field of view: 90
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -14332,7 +14332,7 @@ MonoBehaviour:
   Trigger: {fileID: 1455415189}
   particle: {fileID: 1314470744}
   FallSound: {fileID: 1945267262}
-  RenderTexture: {fileID: 0}
+  RenderTexture: {fileID: 8400000, guid: 320d91239f18fdb468f4908e38c4df5c, type: 2}
 --- !u!65 &1455415191
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -32,7 +32,7 @@ public class Revolver : MonoBehaviour
     {
         if (canpickup) PickUp();
 
-        if (Input.GetKeyDown(KeyCode.Q) && !canpickup)
+        if (Input.GetKeyDown(KeyCode.Q) && !canpickup && playerCon.canUseRevolver)
         {
             if (!selfAimMode)
             {
