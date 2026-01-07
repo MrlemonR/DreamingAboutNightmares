@@ -1,3 +1,15 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-Assets/TextMesh?Pro/** linguist-generated
+*.shader linguist-language=ShaderLab
+*.cginc linguist-language=ShaderLab
+*.compute linguist-language=HLSL
+*.hlsl linguist-language=HLSL
+
+# Unity C# script'lerinin doğru tanınması için
+*.cs linguist-detectable=true
+*.cs linguist-language=C#
+
+# ShaderLab ve Mathematica'nın istatistiklere dahil edilmemesi için
+*.shader linguist-detectable=false
+*.cginc linguist-detectable=false
+*.nb linguist-detectable=false
+*.m linguist-detectable=false
+*.wl linguist-detectable=false
