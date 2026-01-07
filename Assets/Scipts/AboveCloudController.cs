@@ -12,8 +12,13 @@ public class AboveCloudController : MonoBehaviour
     public Transform[] SpawnLocations;
     void Start()
     {
+        StartCoroutine(StartShi());
+    }
+    IEnumerator StartShi()
+    {
         FindReferences();
         Player.transform.position = new Vector3(200f, 100f, -105f);
+        yield return new WaitForSeconds(0.01f);
         Camera.main.targetTexture = RendererTexture;
         PlayerController player = Player.GetComponent<PlayerController>();
         player.canMove = true;
