@@ -1,24 +1,5 @@
-# Shader dosyalarını istatistiklerden çıkar
-*.shader linguist-vendored
-*.cginc linguist-vendored
-*.compute linguist-vendored
-*.hlsl linguist-vendored
+# Sadece C# dosyalarını algıla, diğer her şeyi gizle
+* linguist-vendored
 
-# Mathematica dosyalarını istatistiklerden çıkar
-*.nb linguist-vendored
-*.m linguist-vendored
-*.wl linguist-vendored
-*.wls linguist-vendored
-
-# C# dosyalarının algılanmasını garanti et
-*.cs linguist-detectable=true
-*.cs linguist-language=C#
-
-# Unity meta dosyalarını, asset'leri vs. istatistiklerden çıkar
-*.meta linguist-vendored
-*.prefab linguist-vendored
-*.unity linguist-vendored
-*.asset linguist-vendored
-*.mat linguist-vendored
-*.anim linguist-vendored
-*.controller linguist-vendored
+# C# dosyalarını geri aç
+*.cs -linguist-vendored linguist-detectable=true
