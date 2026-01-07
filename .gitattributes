@@ -1,3 +1,5 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-Assets/TextMesh?Pro/** linguist-generated
+# Sadece C# dosyalarını algıla, diğer her şeyi gizle
+* linguist-vendored
+
+# C# dosyalarını geri aç
+*.cs -linguist-vendored linguist-detectable=true
