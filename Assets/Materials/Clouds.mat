@@ -40,7 +40,7 @@ Material:
     - _Base_Scale: 0.000001
     - _Base_Speed: 30
     - _Base_Strenght: 2.29
-    - _Curvature_Radius: 223.3
+    - _Curvature_Radius: 304.29
     - _Emmision_Strenght: 0
     - _Fade_Depth: 100
     - _FrenselOpacity: 1.22
