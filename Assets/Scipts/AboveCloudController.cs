@@ -1,15 +1,13 @@
 using UnityEngine;
 using System.Collections;
-using NUnit.Framework;
 
 public class AboveCloudController : MonoBehaviour
 {
     private GameObject Player;
     private Transform sphereCenter;
-    private int exitCount = 0;
     public RenderTexture RendererTexture;
+    public GameObject LightHouse;
     public GameObject CloudMan;
-    public Transform[] SpawnLocations;
     void Start()
     {
         StartCoroutine(StartShi());
@@ -25,20 +23,11 @@ public class AboveCloudController : MonoBehaviour
         player.canLook = true;
         player.canHearSound = true;
         player.canUseRevolver = true;
+        player.GetComponent<CharacterController>().stepOffset = 1;
 
         if (sphereCenter == null)
         {
             sphereCenter = transform;
-        }
-    }
-    private bool isSpawned = false;
-    void Update()
-    {
-        if (exitCount >= 2 && !isSpawned)
-        {
-            int randomNumber = Random.Range(0, SpawnLocations.Length);
-            CloudMan.transform.position = SpawnLocations[randomNumber].position;
-            isSpawned = true;
         }
     }
     void FindReferences()
@@ -52,6 +41,7 @@ public class AboveCloudController : MonoBehaviour
             StartCoroutine(TeleportToOppositeSide(other.transform));
         }
     }
+    private bool isSpawned = false;
     IEnumerator TeleportToOppositeSide(Transform target)
     {
         PlayerController player = Player.GetComponent<PlayerController>();
@@ -64,6 +54,12 @@ public class AboveCloudController : MonoBehaviour
         target.position = oppositePoint;
         yield return new WaitForSeconds(0.01f);
         player.canMove = true;
-        exitCount++;
+
+        if (!isSpawned)
+        {
+            LightHouse.SetActive(true);
+            CloudMan.SetActive(true);
+            isSpawned = true;
+        }
     }
 }

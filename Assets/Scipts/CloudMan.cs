@@ -1,24 +1,26 @@
 using UnityEngine;
 
 public class CloudMan : MonoBehaviour
-{
-    public GameObject PressF;
-    public Vector3 pressFPos;
-    public int distance1;
+{   
+    public GameObject Player;
+    void Start()
+    {
+        FindReferences();
+    }
     void Update()
     {
         float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
-        if (distance < distance1)
+        if (distance < 30f)
         {
-            Vector3 dir = transform.position - Camera.main.transform.position;
-            dir.y = 0;
-            transform.rotation = Quaternion.LookRotation(dir);
-            PressF.transform.position = transform.position - pressFPos;
-            PressF.GetComponent<PressFScript>().TextActive(true, 0.5f);
+            Player.GetComponent<CharacterController>().stepOffset = 0.3f;
         }
         else
         {
-            PressF.GetComponent<PressFScript>().TextActive(false, 0.5f);
+            Player.GetComponent<CharacterController>().stepOffset = 1f;
         }
+    }
+    void FindReferences()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 }
