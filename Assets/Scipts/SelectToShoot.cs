@@ -137,7 +137,6 @@ public class SelectToShoot : MonoBehaviour
         Revolver revo = gameObject.GetComponent<Revolver>();
         revo.CharacterMesh.SetActive(false);
         revo.RevoOpenCloseVis(false);
-        StartCoroutine(revo.TextActive(false, 0f));
         Player.GetComponent<PlayerController>().canLook = true;
         Player.GetComponent<PlayerController>().canMove = true;
         yield return new WaitForSeconds(0.2f);

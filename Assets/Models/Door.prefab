@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2023253228102764338}
   - component: {fileID: 9084733564142969050}
   - component: {fileID: 1528852527779009797}
-  - component: {fileID: 9036261703657727714}
   - component: {fileID: 466190698140352975}
   m_Layer: 0
   m_Name: Door
@@ -134,27 +133,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4493585093827132993, guid: 48911263eb9c1044da7b17187ab07662, type: 3}
---- !u!65 &9036261703657727714
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2976797646792829790}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.268944, y: 4.4070983, z: 4.43}
-  m_Center: {x: -1.2329869, y: 0.22246957, z: 5.684342e-14}
 --- !u!114 &466190698140352975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,3 +148,8 @@ MonoBehaviour:
   DoorAnim: {fileID: 9084733564142969050}
   PressF: {fileID: 0}
   Player: {fileID: 0}
+  DoorZ: 0
+  OpenOnce: 0
+  loadRoom: {fileID: 0}
+  OtherRooms: []
+  RoomNumber: 0

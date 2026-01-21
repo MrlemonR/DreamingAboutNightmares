@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
     }
-
     void Update()
     {
         if (cam == null) return;

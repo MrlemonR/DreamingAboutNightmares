@@ -1,16 +1,9 @@
-using System.Collections;
-using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public class DoorOpening : MonoBehaviour
 {
-    PressFScript Pressf;
     public Animator DoorAnim;
-    public GameObject PressF;
     public GameObject Player;
     private bool isOpened = false;
     public bool DoorZ = false;
@@ -21,48 +14,42 @@ public class DoorOpening : MonoBehaviour
     public int RoomNumber;
     void Start()
     {
-        Pressf = PressF.GetComponent<PressFScript>();
-        StartCoroutine(Pressf.TextActive(false, 0f));
         FindReferences();
     }
-    void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if (OpenOnce && openTime > 0) return;
-        StartCoroutine(Pressf.TextActive(true, 0.5f));
-    }
-    void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+        Interact ınteract = Player.GetComponent<Interact>();
+        PlayerData playerData = Player.GetComponent<PlayerData>();
+
+        if (ınteract.canInteract && ınteract.hitObjName == gameObject.name)
         {
             if (OpenOnce && openTime > 0) return;
-            if (isOpened == false && Input.GetKey(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && !isOpened)
             {
                 if (DoorZ) DoorAnim.Play("DoorOpenZ");
                 else DoorAnim.Play("DoorOpeningAnimation");
-                StopAllCoroutines();
-                StartCoroutine(Pressf.TextActive(false, 0.1f));
                 loadRoom.SetActive(true);
-                other.GetComponent<PlayerData>().RoomNumber = RoomNumber;
+                playerData.RoomNumber = RoomNumber;
                 for (int i = 0; i < OtherRooms.Length; i++)
                 {
                     OtherRooms[i].SetActive(false);
                 }
                 isOpened = true;
                 openTime++;
+
             }
         }
-    }
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+
+        float distance = Vector3.Distance(transform.position, Player.transform.position);
+        if (distance > 4f)
         {
-            StartCoroutine(Pressf.TextActive(false, 0.5f));
             if (isOpened)
             {
                 if (DoorZ) DoorAnim.Play("DoorCloseZ");
                 else DoorAnim.Play("DoorClosingAnimation");
                 isOpened = false;
             }
+
         }
     }
     void FindReferences()

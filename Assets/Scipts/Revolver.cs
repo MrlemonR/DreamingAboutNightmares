@@ -2,18 +2,17 @@ using System.Collections;
 using System.Xml.Serialization;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Revolver : MonoBehaviour
 {
     public PlayerController playerCon;
     public Transform PickUpPos;
-    public GameObject PressFText;
     public GameObject CharacterMesh;
     bool isVisible = false;
     public bool canpickup = true;
     public Vector3 aimSelfEuler;
-    Coroutine fadeRoutine;
     Quaternion smoothAimRot;
     public float aimSensitivity = 3f;
     public float aimHorizontalLimit = 5f;
@@ -24,7 +23,6 @@ public class Revolver : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(TextActive(false, 0f));
         CharacterMesh.SetActive(false);
     }
     public bool selfAimMode = false;
@@ -102,10 +100,9 @@ public class Revolver : MonoBehaviour
     }
     void PickUp()
     {
-        float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
-        Vector3 dir = (transform.position - Camera.main.transform.position).normalized;
-        float dot = Vector3.Dot(Camera.main.transform.forward, dir);
-        if (dot > 0.4f && distance < 2f)
+        Interact ınteract = playerCon.gameObject.GetComponent<Interact>();
+
+        if (ınteract.canInteract && ınteract.hitObjName == "GunStand")
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -115,21 +112,18 @@ public class Revolver : MonoBehaviour
                 RevoOpenCloseVis(false);
             }
         }
-        if (dot > 0.4f && distance < 2f)
+
+        if (ınteract.canInteract && ınteract.hitObjName == "GunStand")
         {
             if (!isVisible)
             {
                 isVisible = true;
-                if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-                fadeRoutine = StartCoroutine(TextActive(true, 0.5f));
             }
 
             if (Input.GetKeyDown(KeyCode.F))
             {
                 canpickup = false;
                 isVisible = false;
-                if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-                fadeRoutine = StartCoroutine(TextActive(false, 0.1f));
             }
         }
         else
@@ -137,27 +131,8 @@ public class Revolver : MonoBehaviour
             if (isVisible)
             {
                 isVisible = false;
-                if (fadeRoutine != null) StopCoroutine(fadeRoutine);
-                fadeRoutine = StartCoroutine(TextActive(false, 0.5f));
             }
         }
-    }
-    public IEnumerator TextActive(bool active, float duration)
-    {
-        if (PressFText == null) yield break;
-        TMP_Text text = PressFText.GetComponent<TMP_Text>();
-        if (text == null) yield break;
-        float startAlpha = text.color.a;
-        float target = active ? 1f : 0f;
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, target, elapsed / duration);
-            text.color = new Color(text.color.r, text.color.g, text.color.b, alpha);
-            yield return null;
-        }
-        text.color = new Color(text.color.r, text.color.g, text.color.b, target);
     }
     public void RevoOpenCloseVis(bool active)
     {

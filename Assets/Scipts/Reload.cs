@@ -23,6 +23,8 @@ public class Reload : MonoBehaviour
 
     void Start()
     {
+        SaveOnReload data = SaveSystem.LoadPlayer();
+        if (data != null) Destroy(gameObject);
         CloseBulletts();
     }
 
@@ -39,7 +41,7 @@ public class Reload : MonoBehaviour
             playerController.WalkingSound.Stop();
             playerController.RunningSound.Stop();
         }
-        if (!revolver.selfAimMode && playerController.canUseRevolver &&  Input.GetMouseButton(1))
+        if (!revolver.selfAimMode && playerController.canUseRevolver && Input.GetMouseButton(1))
         {
             HoverToReload();
             ReloadCameraAim();
@@ -108,7 +110,7 @@ public class Reload : MonoBehaviour
             currentBullet = Instantiate(Bullet, BulletLoc[position].transform.position, BulletLoc[position].transform.rotation);
             currentBullet.transform.SetParent(BulletLoc[position].transform);
             ExistBulletPos = position;
-            
+
             PlayerData playerdata = Player.GetComponent<PlayerData>();
             playerdata.SceneName = SceneManager.GetActiveScene().name;
             playerdata.hasBullet = true;
