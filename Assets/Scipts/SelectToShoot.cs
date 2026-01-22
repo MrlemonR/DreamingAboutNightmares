@@ -82,6 +82,7 @@ public class SelectToShoot : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             ShotSound.Stop();
             ShotExplosion.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 1f);
+            ExplosionRotation();
             yield return new WaitForSeconds(1f);
             RevolverShake(0f);
             PlayerData player = Player.GetComponent<PlayerData>();
@@ -95,7 +96,6 @@ public class SelectToShoot : MonoBehaviour
                 reload.currentBullet = null;
                 yield return new WaitForSeconds(1f);
                 SaveSystem.DeleteSaveFile();
-
             }
             else
             {
@@ -160,6 +160,12 @@ public class SelectToShoot : MonoBehaviour
             yield return null;
         }
         ShotExplosion.GetComponent<MeshRenderer>().material.color = endColor;
+    }
+    void ExplosionRotation()
+    {
+        Vector3 dir = transform.position - cam.transform.position;
+        dir.y = 0;
+        ShotExplosion.transform.rotation = Quaternion.LookRotation(dir);
     }
     IEnumerator ChangeGamma()
     {
